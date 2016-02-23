@@ -1,0 +1,6 @@
+# Idea project configuration
+.idea/
+*.iml
+
+#Maven Binaries
+target/
