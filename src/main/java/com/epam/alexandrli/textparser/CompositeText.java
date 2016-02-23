@@ -3,27 +3,46 @@ package com.epam.alexandrli.textparser;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CompositeText implements Printable {
-    private List<Printable> childList = new ArrayList<>();
+public class CompositeText implements Component {
+    private List<Component> components = new ArrayList<>();
+    private Type type;
+
 
     public CompositeText() {
     }
 
+    public List<Component> getComponents() {
+        return components;
+    }
+
+    public void setComponents(List<Component> components) {
+        this.components = components;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
+    }
+
     @Override
-    public void print() {
-        System.out.println(childList);
+    public String toPlainString() {
+        return components.toString();
+
     }
 
-
-    public void add(Printable printable) {
-        childList.add(printable);
+    public void add(Component component) {
+        components.add(component);
     }
 
-    public void remove(Printable printable) {
-        childList.remove(printable);
+    public void remove(Component component) {
+        components.remove(component);
     }
 
-    public Printable getChild(int index) {
-        return childList.get(index);
+    public Component getChild(int index) {
+        return components.get(index);
     }
+
 }
