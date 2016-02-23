@@ -9,12 +9,12 @@ public class CharLeaf implements Printable {
     public CharLeaf() {
     }
 
-    public CharLeaf(char value) {
-        valueOf(value);
+    private CharLeaf(char value) {
+        this.value = value;
     }
 
     private CharLeaf valueOf(char value) {
-        return CharCache.getCachedValue(value);
+        return CharCache.valueOf(value);
     }
 
     @Override
@@ -30,10 +30,10 @@ public class CharLeaf implements Printable {
         this.value = value;
     }
 
-    private static class CharCache {
+    public static class CharCache {
         private static ArrayList<CharLeaf> charCache = new ArrayList<>();
 
-        private static CharLeaf getCachedValue(char value) {
+        public static CharLeaf valueOf(char value) {
             return charCache.get(findCachedValueIndex(value));
         }
 
@@ -48,8 +48,7 @@ public class CharLeaf implements Printable {
         }
 
         private static void cacheNewValue(char value) {
-            CharLeaf nonCachedChar = new CharLeaf();
-            nonCachedChar.setValue(value);
+            CharLeaf nonCachedChar = new CharLeaf(value);
             charCache.add(nonCachedChar);
         }
     }
