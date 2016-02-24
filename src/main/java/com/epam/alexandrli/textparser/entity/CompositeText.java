@@ -1,4 +1,4 @@
-package com.epam.alexandrli.textparser;
+package com.epam.alexandrli.textparser.entity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,9 +28,11 @@ public class CompositeText implements Component {
     }
 
     @Override
-    public String toPlainString() {
-        return components.toString();
-
+    public String toPlainString(StringBuilder sb) {
+        for (Component component : components) {
+            component.toPlainString(sb);
+        }
+        return sb.toString();
     }
 
     public void add(Component component) {
@@ -45,4 +47,7 @@ public class CompositeText implements Component {
         return components.get(index);
     }
 
+    public enum Type {
+        WORD, SENTENCE, PARAGRAPH, TEXT
+    }
 }
