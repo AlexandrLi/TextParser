@@ -19,6 +19,5 @@ public class Runner {
         logger.info("Start text parsing");
         CompositeText compositeText = textParser.parseText(textFromFile);
         logger.info("Text has been parsed successfully");
-        String s = compositeText.toPlainString(new StringBuilder());
     }
 }
