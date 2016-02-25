@@ -35,6 +35,14 @@ public class CompositeText implements Component {
         return sb.toString();
     }
 
+    @Override
+    public String toString() {
+        return "CompositeText{" +
+                "type=" + type +
+                ", number of components=" + components.size() +
+                '}';
+    }
+
     public void add(Component component) {
         components.add(component);
     }
