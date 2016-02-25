@@ -1,5 +1,4 @@
 package com.epam.alexandrli.textparser.factory;
-
 import java.io.InputStream;
 import java.util.Scanner;
 
