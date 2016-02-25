@@ -65,10 +65,10 @@ public class CharLeaf implements Component {
         }
 
         static Type getValueType(char value) {
-            if (value == '!' || value == '?' || value == '.' || value == ',' || value == ':' || value == ';') {
+            if (value == '!' || value == '?' || value == '.' || value == ',' || value == ':' || value == ';' || value=='—') {
                 return Type.PUNСTUATION;
             }
-            if (((int) value > 64 && (int) value < 91) || ((int) value > 96 && (int) value < 123) || ((int) value > 191 && (int) value < 256) || (int) value > 168 || (int) value == 184) {
+            if (((int) value > 64 && (int) value < 91) || ((int) value > 96 && (int) value < 123) || ((int) value > 191 && (int) value < 256) || (int) value == 168 || (int) value == 184) {
                 return Type.WORDCHAR;
             }
             if (value == ' ' || value == '\n' || value == '\r' || value == '\t') {
