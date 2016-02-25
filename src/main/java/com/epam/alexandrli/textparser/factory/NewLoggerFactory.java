@@ -4,7 +4,8 @@ import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.core.joran.spi.JoranException;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import static org.slf4j.LoggerFactory.getLogger;
 
 public class NewLoggerFactory {
 
@@ -14,7 +15,7 @@ public class NewLoggerFactory {
         } catch (JoranException e) {
             e.printStackTrace();
         }
-        return LoggerFactory.getLogger(clazz);
+        return getLogger(clazz);
     }
 
     private static void getLoggerConfig(String fileName) throws JoranException {
