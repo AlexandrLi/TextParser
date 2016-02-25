@@ -2,12 +2,15 @@ package com.epam.alexandrli.textparser.parser;
 
 import com.epam.alexandrli.textparser.entity.CharLeaf;
 import com.epam.alexandrli.textparser.entity.CompositeText;
+import com.epam.alexandrli.textparser.factory.NewLoggerFactory;
+import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
 public class TextParser {
+    private final static Logger logger = NewLoggerFactory.createLoggerWithConfigFromFile(TextParser.class, "logback.xml");
 
     public TextParser() {
     }
@@ -19,37 +22,45 @@ public class TextParser {
         for (String textParagraph : textParagraphs) {
             text.add(parseParagraphs(textParagraph));
         }
+        logger.debug("The result of {} parsing is: {}", CompositeText.Type.TEXT, text.toString());
         return text;
     }
 
     public CompositeText parseParagraphs(String text) {
+        logger.info("Parse {}", CompositeText.Type.PARAGRAPH);
         CompositeText paragraph = new CompositeText();
         paragraph.setType(CompositeText.Type.PARAGRAPH);
         String[] textSentences = text.split(RegexType.getRegex(RegexType.SENTENCE));
         for (String textSentence : textSentences) {
             paragraph.add(parseSentence(textSentence));
         }
+        logger.debug("The result of {} parsing is: {}", CompositeText.Type.PARAGRAPH, paragraph.toString());
         return paragraph;
     }
 
     public CompositeText parseSentence(String text) {
+        logger.info("Parse {}", CompositeText.Type.SENTENCE);
         CompositeText sentence = new CompositeText();
         sentence.setType(CompositeText.Type.SENTENCE);
         String[] textWords = text.split(RegexType.getRegex(RegexType.WORD));
         for (String textWord : textWords) {
             sentence.add(parseWord(textWord));
         }
+        logger.debug("The result of {} parsing is: {}", CompositeText.Type.SENTENCE, sentence.toString());
         return sentence;
     }
 
     public CompositeText parseWord(String text) {
+        logger.info("Parse {}", CompositeText.Type.WORD);
         CompositeText word = new CompositeText();
         word.setType(CompositeText.Type.WORD);
         for (int i = 0; i < text.length(); i++) {
             char c = text.charAt(i);
             CharLeaf symbol = CharLeaf.valueOf(text.charAt(i));
+            logger.debug("Parsed symbol is: {}", symbol.toString());
             word.add(symbol);
         }
+        logger.debug("The result of {} parsing is: {}", CompositeText.Type.WORD, word.toString());
         return word;
     }
 
