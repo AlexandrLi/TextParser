@@ -1,0 +1,25 @@
+<configuration>
+
+    <property name="destination" value="C:/log/textParser.log"/>
+
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>${destination}</file>
+        <encoder>
+            <pattern>%date %level [%thread] %logger{20} [%file:%line] %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <Pattern>%d [%thread] %level %logger{10} - %m%n</Pattern>
+        </encoder>
+    </appender>
+
+    <logger name="com.epam.alexandrli.textparser.parser.TextParser" level="DEBUG" additivity="false">
+        <appender-ref ref="FILE"/>
+    </logger>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+    </root>
+</configuration>
