@@ -68,7 +68,7 @@ public class CharLeaf implements Component {
             if (value == '!' || value == '?' || value == '.' || value == ',' || value == ':' || value == ';' || value=='—') {
                 return Type.PUNСTUATION;
             }
-            if (((int) value > 64 && (int) value < 91) || ((int) value > 96 && (int) value < 123) || ((int) value > 191 && (int) value < 256) || (int) value == 168 || (int) value == 184) {
+            if (((int) value > 64 && (int) value < 91) || ((int) value > 96 && (int) value < 123) || ((int) value > 1039 && (int) value < 1104) || (int) value == 1105 || (int) value == 1025) {
                 return Type.WORDCHAR;
             }
             if (value == ' ' || value == '\n' || value == '\r' || value == '\t') {
