@@ -1,13 +1,8 @@
 package com.epam.alexandrli.textparser.entity;
 
-import org.slf4j.Logger;
-
 import java.util.ArrayList;
 
-import static com.epam.alexandrli.textparser.factory.NewLoggerFactory.createLoggerWithConfigFromFile;
-
 public class CharLeaf implements Component {
-    private final static Logger logger = createLoggerWithConfigFromFile(CharLeaf.class, "Logback.xml");
     private final char value;
     private final Type type;
 
@@ -33,8 +28,8 @@ public class CharLeaf implements Component {
     }
 
     @Override
-    public String toPlainString(StringBuilder sb) {
-        return sb.append(value).toString();
+    public StringBuilder toPlainString(StringBuilder sb) {
+        return sb.append(value);
     }
 
     public char getValue() {
@@ -46,7 +41,7 @@ public class CharLeaf implements Component {
     }
 
     private static class CharCache {
-        private static ArrayList<CharLeaf> charCache = new ArrayList<>();
+        static ArrayList<CharLeaf> charCache = new ArrayList<>();
 
         static CharLeaf getCachedValue(char value) {
             for (CharLeaf charLeaf : charCache) {
@@ -65,7 +60,7 @@ public class CharLeaf implements Component {
         }
 
         static Type getValueType(char value) {
-            if (value == '!' || value == '?' || value == '.' || value == ',' || value == ':' || value == ';' || value=='—') {
+            if (value == '!' || value == '?' || value == '.' || value == ',' || value == ':' || value == ';' || value == '—') {
                 return Type.PUNСTUATION;
             }
             if (((int) value > 64 && (int) value < 91) || ((int) value > 96 && (int) value < 123) || ((int) value > 1039 && (int) value < 1104) || (int) value == 1105 || (int) value == 1025) {
