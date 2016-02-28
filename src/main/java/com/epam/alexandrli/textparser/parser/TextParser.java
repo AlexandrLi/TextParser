@@ -2,15 +2,15 @@ package com.epam.alexandrli.textparser.parser;
 
 import com.epam.alexandrli.textparser.entity.CharLeaf;
 import com.epam.alexandrli.textparser.entity.CompositeText;
-import com.epam.alexandrli.textparser.factory.NewLoggerFactory;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
 public class TextParser {
-    private final static Logger logger = NewLoggerFactory.createLoggerWithConfigFromFile(TextParser.class, "logback.xml");
+    private final static Logger logger = LoggerFactory.getLogger(TextParser.class);
 
     public TextParser() {
     }
