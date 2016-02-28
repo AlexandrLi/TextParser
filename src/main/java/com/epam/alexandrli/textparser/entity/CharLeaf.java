@@ -1,6 +1,7 @@
 package com.epam.alexandrli.textparser.entity;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CharLeaf implements Component {
     private final char value;
@@ -41,22 +42,19 @@ public class CharLeaf implements Component {
     }
 
     private static class CharCache {
-        static ArrayList<CharLeaf> charCache = new ArrayList<>();
+        static Map<Character, CharLeaf> charCache = new HashMap<>();
 
         static CharLeaf getCachedValue(char value) {
-            for (CharLeaf charLeaf : charCache) {
-                if (charLeaf.value == value) {
-                    return charLeaf;
-                }
+            if (charCache.get(value) == null) {
+                cacheNewValue(value);
             }
-            cacheNewValue(value);
-            return charCache.get(charCache.size() - 1);
+            return charCache.get(value);
         }
 
         static void cacheNewValue(char value) {
             Type valueType = getValueType(value);
             CharLeaf nonCachedChar = new CharLeaf(value, valueType);
-            charCache.add(nonCachedChar);
+            charCache.put(value, nonCachedChar);
         }
 
         static Type getValueType(char value) {
