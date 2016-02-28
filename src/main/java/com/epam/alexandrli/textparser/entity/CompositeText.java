@@ -28,11 +28,11 @@ public class CompositeText implements Component {
     }
 
     @Override
-    public String toPlainString(StringBuilder sb) {
+    public StringBuilder toPlainString(StringBuilder sb) {
         for (Component component : components) {
             component.toPlainString(sb);
         }
-        return sb.toString();
+        return sb;
     }
 
     @Override
