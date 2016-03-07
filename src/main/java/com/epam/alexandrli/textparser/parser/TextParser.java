@@ -14,7 +14,7 @@ import static com.epam.alexandrli.textparser.entity.CompositeText.Type;
 public class TextParser {
     private static final String PARAGRAPH = "paragraph";
     private static final String SENTENCE = "sentence";
-    private static final String WORD = "word";
+    private static final String SENTENCE_PART = "sentence.part";
     private final static Logger logger = LoggerFactory.getLogger(TextParser.class);
     private Properties regexProperties = getProperties(REGEX_PROPERTIES);
 
@@ -48,26 +48,25 @@ public class TextParser {
         logger.info("Parse {}", Type.SENTENCE);
         CompositeText sentence = new CompositeText();
         sentence.setType(Type.SENTENCE);
-        String[] textWords = text.split(regexProperties.getProperty(WORD));
-        for (String textWord : textWords) {
-            sentence.add(parseWord(textWord));
+        String[] textSentenceParts = text.split(regexProperties.getProperty(SENTENCE_PART));
+        for (String sentencePart : textSentenceParts) {
+            sentence.add(parseSentencePart(sentencePart));
         }
         logger.debug("The result of {} parsing is: {}", Type.SENTENCE, sentence.toString());
         return sentence;
     }
 
-    public CompositeText parseWord(String text) {
-        logger.info("Parse {}", Type.WORD);
-        CompositeText word = new CompositeText();
-        word.setType(Type.WORD);
+    public CompositeText parseSentencePart(String text) {
+        logger.info("Parse {}", Type.SENTENCE_PART);
+        CompositeText sentencePart = new CompositeText();
+        sentencePart.setType(Type.SENTENCE_PART);
         for (int i = 0; i < text.length(); i++) {
-            char c = text.charAt(i);
             CharLeaf symbol = CharLeaf.valueOf(text.charAt(i));
             logger.debug("Parsed symbol is: {}", symbol.toString());
-            word.add(symbol);
+            sentencePart.add(symbol);
         }
-        logger.debug("The result of {} parsing is: {}", Type.WORD, word.toString());
-        return word;
+        logger.debug("The result of {} parsing is: {}", Type.SENTENCE_PART, sentencePart.toString());
+        return sentencePart;
     }
 
 }
