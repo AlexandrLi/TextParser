@@ -91,11 +91,13 @@ public class CompositeText implements Component, Iterable<Component> {
     }
 
     private class DeepIterator implements Iterator<Component> {
-        Stack<Iterator<Component>> stack = new Stack<>();
+        Deque<Iterator<Component>> stack = new ArrayDeque<>();
+        Iterator<Component> currentIterator;
         Type deepType;
 
         public DeepIterator(Type type) {
-            stack.push(components.iterator());
+            currentIterator = components.iterator();
+            stack.push(currentIterator);
             deepType = type;
         }
 
@@ -105,11 +107,11 @@ public class CompositeText implements Component, Iterable<Component> {
             if (stack.isEmpty()) {
                 return false;
             }
-            Iterator<Component> componentIterator = stack.peek();
-            if (componentIterator.hasNext()) {
+            if (currentIterator.hasNext()) {
                 return true;
             }
             stack.pop();
+            currentIterator = stack.peek();
             return hasNext();
         }
 
@@ -118,15 +120,15 @@ public class CompositeText implements Component, Iterable<Component> {
             if (!hasNext()) {
                 throw new NoSuchElementException();
             }
-            Iterator<Component> componentIterator = stack.peek();
-            Component component = componentIterator.next();
+            Component component = currentIterator.next();
             if (component instanceof CompositeText) {
-                if (((CompositeText) component).getType() == deepType) {
-                    return component;
+                while (((CompositeText) component).getType() != deepType) {
+                    currentIterator = ((CompositeText) component).iterator();
+                    stack.push(currentIterator);
+                    component = currentIterator.next();
                 }
-                stack.push(((CompositeText) component).iterator());
             }
-            return next();
+            return component;
         }
     }
 }
