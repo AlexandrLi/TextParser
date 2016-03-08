@@ -4,12 +4,16 @@ import java.util.*;
 
 public class CompositeText implements Component, Iterable<Component> {
     private static List<Type> typeHierarchy = new ArrayList<>();
+
+    static {
+        Collections.addAll(typeHierarchy, Type.values());
+    }
+
     private List<Component> components = new ArrayList<>();
     private Type type;
 
-
     public CompositeText() {
-        Collections.addAll(typeHierarchy, Type.values());
+
     }
 
     public List<Component> getComponents() {
@@ -49,7 +53,7 @@ public class CompositeText implements Component, Iterable<Component> {
     }
 
     public boolean isNestedType(Type type) {
-        for (int i = typeHierarchy.indexOf(type); i < typeHierarchy.size(); i++) {
+        for (int i = typeHierarchy.indexOf(this.type) + 1; i < typeHierarchy.size(); i++) {
             if (type == typeHierarchy.get(i)) {
                 return true;
             }
@@ -118,15 +122,14 @@ public class CompositeText implements Component, Iterable<Component> {
 
         @Override
         public boolean hasNext() {
-            if (stack.isEmpty()) {
-                return false;
+            while (!stack.isEmpty()) {
+                if (currentIterator.hasNext()) {
+                    return true;
+                }
+                stack.pop();
+                currentIterator = stack.peek();
             }
-            if (currentIterator.hasNext()) {
-                return true;
-            }
-            stack.pop();
-            currentIterator = stack.peek();
-            return hasNext();
+            return false;
         }
 
         @Override
