@@ -59,9 +59,13 @@ public class TextParser {
     public CompositeText parseSentencePart(String text) {
         logger.info("Parse {}", Type.SENTENCE_PART);
         CompositeText sentencePart = new CompositeText();
-        sentencePart.setType(Type.SENTENCE_PART);
         for (int i = 0; i < text.length(); i++) {
             CharLeaf symbol = CharLeaf.valueOf(text.charAt(i));
+            if (symbol.getType() == CharLeaf.Type.WORDCHAR) {
+                sentencePart.setType(Type.WORD);
+            } else {
+                sentencePart.setType(Type.PUNCTUATION);
+            }
             logger.debug("Parsed symbol is: {}", symbol.toString());
             sentencePart.add(symbol);
         }
