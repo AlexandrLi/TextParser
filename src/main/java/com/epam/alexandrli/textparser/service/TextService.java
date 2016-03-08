@@ -12,11 +12,11 @@ import java.util.List;
 import static com.epam.alexandrli.textparser.entity.CompositeText.Type;
 
 public class TextService {
-    public static final Comparator<CompositeText> ELEMENTS_COUNT_ORDER = new ComponentsCountComparator();
+    public static final Comparator<CompositeText> COMPONENTS_COUNT_ORDER = new ComponentsCountComparator();
 
     public List<CompositeText> sortSentencesByWordsCount(CompositeText text) {
         List<CompositeText> sentences = text.getCompositeList(Type.SENTENCE);
-        sentences.sort(ELEMENTS_COUNT_ORDER);
+        sentences.sort(COMPONENTS_COUNT_ORDER);
         return sentences;
     }
 
