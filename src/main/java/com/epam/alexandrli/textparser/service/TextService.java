@@ -5,30 +5,19 @@ import com.epam.alexandrli.textparser.entity.CompositeText;
 import com.sun.corba.se.impl.io.TypeMismatchException;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
 import static com.epam.alexandrli.textparser.entity.CompositeText.Type;
 
 public class TextService {
-    public List<Component> sortSentencesByWordsCount(CompositeText text) {
-        List<Component> sentences = getComponentsList(text, Type.SENTENCE);
-        sentences.sort((firstSentence, secondSentence) -> {
-            if (firstSentence instanceof CompositeText && secondSentence instanceof CompositeText) {
-                return Integer.compare(((CompositeText) firstSentence).numberOfChildComponents(), ((CompositeText) secondSentence).numberOfChildComponents());
-            }
-            throw new TypeMismatchException("Incorrect component type");
-        });
-        return sentences;
-    }
+    public static final Comparator<CompositeText> ELEMENTS_COUNT_ORDER = new ComponentsCountComparator();
 
-    public List<Component> getComponentsList(CompositeText text, Type componentsType) {
-        Iterator<Component> iterator = text.iterator(componentsType);
-        List<Component> components = new ArrayList<>();
-        while (iterator.hasNext()) {
-            components.add(iterator.next());
-        }
-        return components;
+    public List<CompositeText> sortSentencesByWordsCount(CompositeText text) {
+        List<CompositeText> sentences = text.getCompositeList(Type.SENTENCE);
+        sentences.sort(ELEMENTS_COUNT_ORDER);
+        return sentences;
     }
 
     public List<Component> getAllWordsFromSentence(CompositeText text) {
@@ -48,4 +37,13 @@ public class TextService {
         }
         return words;
     }
+
+    private static class ComponentsCountComparator implements Comparator<CompositeText> {
+
+        @Override
+        public int compare(CompositeText firstComposite, CompositeText secondComposite) {
+            return Integer.compare(firstComposite.numberOfChildComponents(), secondComposite.numberOfChildComponents());
+        }
+    }
+
 }
