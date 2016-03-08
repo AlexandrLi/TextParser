@@ -66,6 +66,18 @@ public class CompositeText implements Component, Iterable<Component> {
         return count;
     }
 
+    public List<CompositeText> getCompositeList(Type componentType) {
+        Iterator<Component> iterator = this.iterator(componentType);
+        List<CompositeText> components = new ArrayList<>();
+        Component component;
+        while (iterator.hasNext()) {
+            component = iterator.next();
+            if (component instanceof CompositeText) {
+                components.add(((CompositeText) component));
+            }
+        }
+        return components;
+    }
 
     public boolean isNearestNestedType(Type type) {
         return (typeHierarchy.indexOf(type) - typeHierarchy.indexOf(this.type)) == 1;
