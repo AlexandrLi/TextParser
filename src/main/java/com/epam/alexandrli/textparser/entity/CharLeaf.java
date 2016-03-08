@@ -37,7 +37,7 @@ public class CharLeaf implements Component {
         return value;
     }
 
-    private enum Type {
+    public enum Type {
         WORDCHAR, PUNСTUATION, WHITESPACE, SYMBOL
     }
 
@@ -57,6 +57,7 @@ public class CharLeaf implements Component {
             charCache.put(value, nonCachedChar);
         }
 
+        // TODO: 29.02.2016 Property load for values
         static Type getValueType(char value) {
             if (value == '!' || value == '?' || value == '.' || value == ',' || value == ':' || value == ';' || value == '—') {
                 return Type.PUNСTUATION;
