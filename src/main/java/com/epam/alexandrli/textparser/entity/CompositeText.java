@@ -48,14 +48,6 @@ public class CompositeText implements Component, Iterable<Component> {
         components.add(component);
     }
 
-    public void remove(Component component) {
-        components.remove(component);
-    }
-
-    public Component getChild(int index) {
-        return components.get(index);
-    }
-
     public boolean isNestedType(Type type) {
         for (int i = typeHierarchy.indexOf(type); i < typeHierarchy.size(); i++) {
             if (type == typeHierarchy.get(i)) {
@@ -64,6 +56,16 @@ public class CompositeText implements Component, Iterable<Component> {
         }
         return false;
     }
+
+    public int numberOfChildComponents() {
+        int count = 0;
+        Iterator<Component> iterator = components.iterator();
+        if (iterator.hasNext()) {
+            count++;
+        }
+        return count;
+    }
+
 
     public boolean isNearestNestedType(Type type) {
         return (typeHierarchy.indexOf(type) - typeHierarchy.indexOf(this.type)) == 1;
@@ -87,7 +89,7 @@ public class CompositeText implements Component, Iterable<Component> {
     }
 
     public enum Type {
-        TEXT, PARAGRAPH, SENTENCE, SENTENCE_PART
+        TEXT, PARAGRAPH, SENTENCE, SENTENCE_PART, WORD, PUNCTUATION
     }
 
     private class DeepIterator implements Iterator<Component> {
