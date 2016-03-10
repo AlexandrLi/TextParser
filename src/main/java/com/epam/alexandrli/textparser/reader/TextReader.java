@@ -1,4 +1,4 @@
-package com.epam.alexandrli.textparser.factory;
+package com.epam.alexandrli.textparser.reader;
 import java.io.InputStream;
 import java.util.Scanner;
 
