@@ -62,12 +62,7 @@ public class CompositeText implements Component, Iterable<Component> {
     }
 
     public int numberOfChildComponents() {
-        int count = 0;
-        Iterator<Component> iterator = components.iterator();
-        if (iterator.hasNext()) {
-            count++;
-        }
-        return count;
+        return components.size();
     }
 
     public List<CompositeText> getCompositeList(Type componentType) {
@@ -96,6 +91,15 @@ public class CompositeText implements Component, Iterable<Component> {
         } else {
             return getTypeIterator(type);
         }
+    }
+
+    public List<Component> getAllComponentsAsList(Type componentsType) {
+        List<Component> components = new ArrayList<>();
+        Iterator<Component> componentIterator = this.iterator(componentsType);
+        while (componentIterator.hasNext()) {
+            components.add(componentIterator.next());
+        }
+        return components;
     }
 
     private Iterator<Component> getTypeIterator(Type type) {
