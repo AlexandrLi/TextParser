@@ -83,20 +83,26 @@ public class CompositeText implements Component, Iterable<Component> {
         return components;
     }
 
-    public boolean isNearestNestedType(Type type) {
+    public boolean checkNearestNestedType(Type type) {
+        if (!isNestedType(type)) {
+            throw new IllegalArgumentException("Wrong type");
+        }
         return (typeHierarchy.indexOf(type) - typeHierarchy.indexOf(this.type)) == 1;
     }
 
     public Iterator<Component> iterator(Type type) {
-        if (isNearestNestedType(type)) {
+        if (checkNearestNestedType(type) && this.type != Type.SENTENCE) {
             return iterator();
         } else {
-            if (isNestedType(type)) {
-                return new DeepIterator(type);
-            } else {
-                throw new IllegalArgumentException();
-            }
+            return getTypeIterator(type);
         }
+    }
+
+    private Iterator<Component> getTypeIterator(Type type) {
+        if (this.type == Type.SENTENCE && type.ordinal() > 2) {
+            return new FilteredIterator(type);
+        }
+        return new DeepIterator(type);
     }
 
     @Override
@@ -105,7 +111,7 @@ public class CompositeText implements Component, Iterable<Component> {
     }
 
     public enum Type {
-        TEXT, PARAGRAPH, SENTENCE, SENTENCE_PART, WORD, PUNCTUATION
+        TEXT, PARAGRAPH, SENTENCE, WORD, PUNCTUATION
     }
 
     private class DeepIterator implements Iterator<Component> {
@@ -140,12 +146,54 @@ public class CompositeText implements Component, Iterable<Component> {
             Component component = currentIterator.next();
             if (component instanceof CompositeText) {
                 while (((CompositeText) component).getType() != deepType) {
-                    currentIterator = ((CompositeText) component).iterator();
+                    currentIterator = ((CompositeText) component).iterator(deepType);
                     stack.push(currentIterator);
                     component = currentIterator.next();
                 }
             }
             return component;
+        }
+    }
+
+    private class FilteredIterator implements Iterator<Component> {
+        int currentPosition;
+        Type filterType;
+
+        public FilteredIterator(Type type) {
+            filterType = type;
+            for (int i = 0; i < components.size(); i++) {
+                Component component = components.get(i);
+                if (component instanceof CompositeText) {
+                    if (((CompositeText) component).getType() == filterType) {
+                        currentPosition = i;
+                        break;
+                    }
+                }
+            }
+        }
+
+
+        @Override
+        public boolean hasNext() {
+            for (int i = currentPosition; i < components.size(); i++) {
+                Component component = components.get(i);
+                if (component instanceof CompositeText) {
+                    if (((CompositeText) component).getType() == filterType) {
+                        currentPosition = i;
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        @Override
+        public Component next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+            currentPosition++;
+            return components.get(currentPosition - 1);
         }
     }
 }
